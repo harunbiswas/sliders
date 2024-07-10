@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+body {
+  margin-top: 100px;
+  overflow-x: hidden; }
+
+.slider-1 {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 30px;
+  transition: 2s ease;
+  cursor: url("https://ebs1.kbodev.ovh/wp-content/uploads/2024/07/Frame-84.png"), auto; }
+  .slider-1-slide {
+    width: 270px;
+    height: 270px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 10px; }
+    .slider-1-slide h3 {
+      color: #fff;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 600;
+      font-family: 'DM Sans'; }
+    .slider-1-slide img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1; }
+  .slider-1-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    gap: 5px; }
+    @media screen and (max-width: 768px) {
+      .slider-1-btns {
+        display: none; } }
+    .slider-1-btns button {
+      background-color: #ed7146;
+      width: 10px;
+      height: 4px;
+      border-radius: 1rem;
+      display: block;
+      border: none;
+      transition: 0.4s ease; }
+      .slider-1-btns button.active, .slider-1-btns button:hover {
+        width: 30px;
+        background-color: #ecab06; }
