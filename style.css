@@ -3,9 +3,12 @@
   padding: 0;
   box-sizing: border-box; }
 
-body {
+.slider-1-wrp,
+.slider-2-wrp {
   margin-top: 100px;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  width: 100vw;
+  margin: auto; }
 
 .slider-1 {
   display: grid;
@@ -57,3 +60,55 @@ body {
       .slider-1-btns button.active, .slider-1-btns button:hover {
         width: 30px;
         background-color: #ecab06; }
+
+.slider-2 {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 60px;
+  transition: 2s ease;
+  cursor: url("https://ebs1.kbodev.ovh/wp-content/uploads/2024/07/Frame-84.png"), auto; }
+  @media screen and (max-width: 750px) {
+    .slider-2 {
+      gap: 0; } }
+  .slider-2-slide {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: column;
+    position: relative;
+    padding: 20px;
+    overflow: hidden;
+    width: 670px;
+    min-height: 430px;
+    border-radius: 16px;
+    z-index: 1; }
+    @media screen and (max-width: 750px) {
+      .slider-2-slide {
+        width: 425px; } }
+    .slider-2-slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #a7340da2, #f589623f, #f9bb1d00);
+      z-index: -1; }
+    .slider-2-slide img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1; }
+    .slider-2-slide .content {
+      color: #fff;
+      font-family: 'DM Sans';
+      width: 80%; }
+      .slider-2-slide .content h4 {
+        font-size: 20px;
+        font-weight: 600; }
+      .slider-2-slide .content p {
+        font-size: 16px;
+        padding-bottom: 20px; }

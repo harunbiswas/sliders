@@ -1,3 +1,4 @@
+// slider 1
 document.addEventListener('DOMContentLoaded', () => {
   const slider1 = document.querySelector('.slider-1')
   const slides = document.querySelectorAll('.slider-1-slide')
@@ -7,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const slideMargin = 30 // Margin between slides
 
   let currentIndex = 0 // Current slide index
-  let startX = 0 // Initial position of mouse click
+  let startX = 0 // Initial position of mouse click or touch
   let isDragging = false // Flag to track dragging state
   let translateX = 0 // Current translation value
 
@@ -56,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Autoplay functionality
+  let autoplayInterval
+
   // Function to start autoplay
   function startAutoplay() {
     autoplayInterval = setInterval(() => {
@@ -75,58 +78,58 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   startAutoplay()
+
   // Function to restart autoplay
   function restartAutoplay() {
     stopAutoplay() // Clear any existing autoplay interval
     startAutoplay() // Start autoplay again
   }
 
-  // Event listeners for mouse drag
+  // Event listeners for mouse drag and touch drag
   let start
-  slider1.addEventListener('mousedown', e => {
-    isDragging = true
-    start = e.pageX
-    startX = e.pageX - translateX
-  })
-
-  let newX
   let pagex
-  slider1.addEventListener('mousemove', e => {
+
+  const startDrag = e => {
+    isDragging = true
+    start = e.pageX || e.touches[0].pageX
+    startX = start - translateX
+  }
+
+  const onDrag = e => {
     if (isDragging) {
-      pagex = e.pageX
-      newX = pagex - startX
+      pagex = e.pageX || e.touches[0].pageX
+      const newX = pagex - startX
 
       slider1.style.transition = 'none'
       slider1.style.transform = `translateX(${newX}px)`
     }
-  })
+  }
 
-  slider1.addEventListener('mouseup', () => {
+  const endDrag = e => {
     if (isDragging) {
       isDragging = false
+      slider1.style.transition = '0.2s ease-in-out'
 
-      slider1.style.transition = ' 2s ease-in-out'
-
-      // Calculate index based on drag distance
+      // Determine direction of slide change
       if (start > pagex + 100) {
         if (currentIndex < btnCount - 1) {
           currentIndex += 1
-          goToSlide(currentIndex)
-        } else {
-          currentIndex = btnCount - 1
-          goToSlide(currentIndex)
         }
-      } else if (start < pagex + 100) {
+      } else if (start < pagex - 100) {
         if (currentIndex > 0) {
           currentIndex -= 1
-          goToSlide(currentIndex)
-        } else {
-          currentIndex = 0
-          goToSlide(currentIndex)
         }
       }
+      goToSlide(currentIndex)
     }
-  })
+  }
+
+  slider1.addEventListener('mousedown', startDrag)
+  slider1.addEventListener('mousemove', onDrag)
+  slider1.addEventListener('mouseup', endDrag)
+  slider1.addEventListener('touchstart', startDrag)
+  slider1.addEventListener('touchmove', onDrag)
+  slider1.addEventListener('touchend', endDrag)
 
   const slider1wrp = document.querySelector('.slider-1-wrp')
   slider1wrp.addEventListener('mouseover', () => {
@@ -135,4 +138,142 @@ document.addEventListener('DOMContentLoaded', () => {
   slider1wrp.addEventListener('mouseout', () => {
     restartAutoplay()
   })
+
+  // Initialize slider
+  updateSlider()
+})
+
+// slider 2
+document.addEventListener('DOMContentLoaded', () => {
+  const slider2 = document.querySelector('.slider-2')
+  const slides = document.querySelectorAll('.slider-2-slide')
+  const btnsContainer = document.querySelector('.slider-2-btns')
+
+  const slideWidth = window.innerWidth < 750 ? 425 : 670 // Width of each slide
+  const slideMargin = window.innerWidth < 750 ? 0 : 60 // Margin between slides
+
+  let currentIndex = 0 // Current slide index
+  let translateX = 0 // Current translation value
+
+  // Calculate number of slides visible at a time
+  const slidesVisible = Math.floor(
+    slider2.clientWidth / (slideWidth + slideMargin)
+  )
+
+  const btnCount = Math.ceil(slides.length / slidesVisible)
+
+  // Function to update slider position
+  const updateSlider = () => {
+    slider2.style.transform = `translateX(${translateX}px)`
+  }
+
+  // Function to handle slide change
+  const goToSlide = index => {
+    currentIndex = index
+    translateX = -currentIndex * (slideWidth + slideMargin)
+    updateSlider()
+
+    restartAutoplay()
+  }
+
+  // Autoplay functionality
+  let autoplayInterval
+
+  let removeNum
+
+  if (window.innerWidth > 1440) {
+    removeNum = 0
+  } else if (window.innerWidth <= 1440 && window.innerWidth >= 750) {
+    removeNum = 2
+  } else {
+    removeNum = 1
+  }
+
+  console.log(removeNum)
+
+  // Function to start autoplay
+  function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+      if (currentIndex < btnCount - removeNum) {
+        currentIndex += 1
+        goToSlide(currentIndex)
+      } else {
+        currentIndex = 0
+        goToSlide(currentIndex)
+      }
+    }, 6000)
+  }
+
+  // Function to stop autoplay
+  function stopAutoplay() {
+    clearInterval(autoplayInterval)
+  }
+
+  startAutoplay()
+
+  // Function to restart autoplay
+  function restartAutoplay() {
+    stopAutoplay() // Clear any existing autoplay interval
+    startAutoplay() // Start autoplay again
+  }
+
+  // Event listeners for mouse drag and touch drag
+  let startX = 0
+  let isDragging = false
+  let start
+  let pagex
+
+  const startDrag = e => {
+    isDragging = true
+    start = e.pageX || e.touches[0].pageX
+    startX = start - translateX
+  }
+
+  const onDrag = e => {
+    if (isDragging) {
+      pagex = e.pageX || e.touches[0].pageX
+      const newX = pagex - startX
+      slider2.style.transition = 'none'
+      slider2.style.transform = `translateX(${newX}px)`
+    }
+  }
+
+  const endDrag = e => {
+    if (isDragging) {
+      isDragging = false
+      slider2.style.transition = '0.2s ease-in-out'
+
+      // Determine direction of slide change
+      if (start > pagex + 100) {
+        if (currentIndex < btnCount - removeNum) {
+          currentIndex += 1
+        }
+      } else if (start < pagex - 100) {
+        if (currentIndex > 0) {
+          currentIndex -= 1
+        }
+      }
+      goToSlide(currentIndex)
+    }
+  }
+
+  slider2.addEventListener('mousedown', startDrag)
+  slider2.addEventListener('mousemove', onDrag)
+  slider2.addEventListener('mouseup', endDrag)
+  slider2.addEventListener('touchstart', startDrag)
+  slider2.addEventListener('touchmove', onDrag)
+  slider2.addEventListener('touchend', endDrag)
+
+  // Pause autoplay on mouseover
+  slider2.addEventListener('mouseover', () => {
+    stopAutoplay()
+  })
+
+  // Restart autoplay on mouseout
+  slider2.addEventListener('mouseout', () => {
+    restartAutoplay()
+  })
+
+  // Initialize slider
+  updateSlider()
 })
